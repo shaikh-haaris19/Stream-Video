@@ -301,6 +301,18 @@
   resolved "https://registry.yarnpkg.com/@humanwhocodes/retry/-/retry-0.4.3.tgz#c2b9d2e374ee62c586d3adbea87199b1d7a7a6ba"
   integrity sha512-bV0Tgo9K4hfPCek+aMAn81RppFKv2ySDQeMoSZuvTASywNTnVJCArCZE2FWqpvIatKu7VMRLWlR1EazvVhDyhQ==
 
+"@imagekit/javascript@^5.5.0":
+  version "5.5.1"
+  resolved "https://registry.yarnpkg.com/@imagekit/javascript/-/javascript-5.5.1.tgz#47703888b28d208543b3a75efdba7babe1a7b57a"
+  integrity sha512-eGEbZGKCqX/rC1iwceb1pLg5oHJhGkH68+i6JhFFSDktrdCMC/475a5R0Obtnk6IbIc4eV+1vynkK4WZFeLWEQ==
+
+"@imagekit/next@^2.1.6":
+  version "2.1.6"
+  resolved "https://registry.yarnpkg.com/@imagekit/next/-/next-2.1.6.tgz#abb9d25f087f9b6b65637b4695dc64b327b15ca3"
+  integrity sha512-VQH89cgppjscajV1R+ZN5cydq3NFyiL/5ytYZrZTiWIappIwW2DG2juHjRVIIZlz0Rc7nLZ5qfNC2GNkzjQiLQ==
+  dependencies:
+    "@imagekit/javascript" "^5.5.0"
+
 "@img/colour@^1.1.0":
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/@img/colour/-/colour-1.1.0.tgz#b0c2c2fa661adf75effd6b4964497cd80010bb9d"
