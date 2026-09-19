@@ -6,25 +6,25 @@ import { z } from "zod";
 
 export async function POST(req: NextRequest) {
 
-
     try {
 
-        const { email, password } = await req.json();
+        const { email, password, confirmPassword } = await req.json();
 
         if (!email || !password) {
             return NextResponse.json({ error: "Email and password are required" }, { status: 400 });
         }
 
         //Validate email and password Using Zod
-        const validateBody = SignUpSchema.safeParse({ email, password });
+        const validateBody = SignUpSchema.safeParse({ email, password, confirmPassword });
 
         if (!validateBody.success) {
             const errors = z.flattenError(validateBody.error).fieldErrors
 
             const emailError = errors.email?.[0];
             const passwordError = errors.password?.[0];
+            const confirmPasswordError = errors.confirmPassword?.[0];
 
-            return NextResponse.json({ error: emailError || passwordError }, { status: 400 });
+            return NextResponse.json({ error: emailError || passwordError || confirmPasswordError }, { status: 400 });
         }
 
         //Connect to the database
@@ -41,7 +41,7 @@ export async function POST(req: NextRequest) {
         const newUser = new UserModel({ email, password });
         await newUser.save();
 
-        return NextResponse.json({ message: "User created successfully" }, { status: 201 });
+        return NextResponse.json({ success: true, message: "User created successfully" }, { status: 201 });
 
     } catch (error) {
 
