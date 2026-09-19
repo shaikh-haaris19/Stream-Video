@@ -221,6 +221,14 @@ const SignUp = () => {
                             </Button>
                         </Field>
 
+                        {/* Navigate to Sign In Page If User Already Have An Account */}
+                        <p className="text-center mt-4 text-sm text-gray-600">
+                            Already have an account?{" "}
+                            <a href="/sign-in" className="text-blue-500 hover:underline">
+                                Sign In
+                            </a>
+                        </p>
+
                     </form>
                 </CardContent>
 

@@ -26,7 +26,7 @@ export const authOptions: NextAuthOptions = {
 
                 try {
 
-                    connectDB();
+                    await connectDB();
 
                     const user = await UserModel.findOne({ email: credentials.email });
 

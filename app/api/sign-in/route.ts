@@ -1,0 +1,56 @@
+import { NextResponse, NextRequest } from "next/server";
+import { connectDB } from "@/lib/connectDB";
+import UserModel from "@/models/UserModel";
+import { z } from "zod";
+import { SignInSchema } from "@/Schemas/SignInSchema";
+import bcrypt from "bcryptjs";
+
+export async function POST(req: NextRequest) {
+
+    try {
+
+        const { email, password } = await req.json();
+
+        if (!email || !password) {
+            return NextResponse.json({ error: "Email and password are required" }, { status: 400 });
+        }
+
+        //Validate email and password Using Zod
+        const validateBody = SignInSchema.safeParse({ email, password });
+
+        if (!validateBody.success) {
+            const errors = z.flattenError(validateBody.error).fieldErrors
+
+            const emailError = errors.email?.[0];
+            const passwordError = errors.password?.[0];
+
+            return NextResponse.json({ error: emailError || passwordError }, { status: 400 });
+        }
+
+        //Connect to the database
+        await connectDB();
+
+        //Check if the user exists
+        const existingUser = await UserModel.findOne({ email });
+
+        if (!existingUser) {
+            return NextResponse.json({ error: "User Not Found! Please Check Your Email" }, { status: 400 });
+        }
+
+        //Check if the password is correct
+        const isPasswordCorrect = await bcrypt.compare(password, existingUser.password);
+
+        if (!isPasswordCorrect) {
+            return NextResponse.json({ error: "Invalid password" }, { status: 400 });
+        }
+
+        return NextResponse.json({ success: true, message: "Welcome back!" }, { status: 200 });
+
+    } catch (error) {
+
+        console.error(error);
+        return NextResponse.json({ error: "Failed to Register User" }, { status: 500 });
+
+    }
+
+}
