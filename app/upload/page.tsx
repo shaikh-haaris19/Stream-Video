@@ -16,7 +16,17 @@ import { Button } from "@/components/ui/button"
 import { useForm } from "react-hook-form"
 import { toast, ToastContainer } from "react-toastify"
 import axios from "axios"
-import { Loader2, X } from "lucide-react"
+import { Loader2 } from "lucide-react"
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+} from "@/components/ui/alert-dialog"
 
 const Upload = () => {
 
@@ -24,6 +34,8 @@ const Upload = () => {
     const [progress, setProgress] = useState(0);
     const [videoUrl, setVideoUrl] = useState<string | null>(null);
     const [fileId, setFileId] = useState<string | null>(null);
+    const [isDialogOpen, setIsDialogOpen] = useState(false);
+    const [isUploadCanceled, setIsUploadCanceled] = useState(false);
 
     const {
         register,
@@ -52,6 +64,7 @@ const Upload = () => {
                 title: data.title,
                 description: data.description,
                 videoUrl: videoUrl,
+                fileId,
                 thumbnailUrl: `${videoUrl}/ik-thumbnail.jpg`
             });
 
@@ -72,9 +85,51 @@ const Upload = () => {
 
     }
 
+    const handleCancelUpload = async () => {
+
+        try {
+
+            const response = await axios.post("/api/delete-video", { fileId });
+
+            if (response.data.success) {
+
+                toast.success(response.data.message);
+                setVideoUrl(null);
+                setFileId(null);
+                setIsUploadCanceled(true);
+
+            } else {
+                toast.error("Failed to cancel the upload");
+            }
+
+        } catch (error) {
+            console.error("Cancel Upload Error:", error);
+            toast.error("An error occurred while canceling the upload");
+        } finally {
+            setIsDialogOpen(false);
+        }
+
+    }
+
     return (
         <div className="w-2/3 md:w-full max-w-2xl mx-auto p-6 bg-white rounded-lg shadow-md border border-black mt-15">
             <ToastContainer />
+
+            <AlertDialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+                <AlertDialogContent>
+                    <AlertDialogHeader>
+                        <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                        <AlertDialogDescription>
+                            This action cannot be undone. This will permanently delete your
+                            account from our servers.
+                        </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                        <AlertDialogAction onClick={() => { handleCancelUpload(); }}>Continue</AlertDialogAction>
+                    </AlertDialogFooter>
+                </AlertDialogContent>
+            </AlertDialog>
 
             <h1 className="text-2xl font-bold mb-4">Upload Your Video</h1>
 
@@ -115,6 +170,7 @@ const Upload = () => {
 
                     <FileUpload
                         fileType={"video"}
+                        reset={isUploadCanceled}
                         onUploadSuccess={(response) => {
                             console.log("Upload successful:", response);
                             setFileId(response.fileId);
@@ -140,7 +196,7 @@ const Upload = () => {
                                 <Button type="submit" variant="default" className="ml-auto shadow text-lg py-5 px-4 mt-4 cursor-pointer">
                                     Upload Video
                                 </Button>
-                                <Button onClick={() => { handleCancelUpload() }} type="submit" variant="destructive" className="ml-auto shadow text-lg py-5 px-4 mb-4 cursor-pointer">
+                                <Button onClick={() => { setIsDialogOpen(true) }} type="button" variant="destructive" className="ml-auto shadow text-lg py-5 px-4 mb-4 cursor-pointer">
                                     Cancel Upload
                                 </Button>
                             </>

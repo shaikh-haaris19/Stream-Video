@@ -5,18 +5,20 @@ import {
     upload,
 } from "@imagekit/next";
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 interface FileUploadProps {
     onUploadSuccess: (response: any) => void;
     onProgress?: (progress: number) => void;
     fileType?: 'image' | 'video';
+    reset?: boolean; 
 }
 
 const FileUpload = ({
     onUploadSuccess,
     onProgress,
-    fileType
+    fileType,
+    reset
 }: FileUploadProps) => {
 
     const [uploading, setUploading] = useState(false);
@@ -82,6 +84,15 @@ const FileUpload = ({
         }
 
     }
+
+    useEffect(() => {
+
+        if (reset) {
+            setFileName(null);
+            setError(null);
+        }
+        
+    }, [reset]);
 
     return (
         <>
