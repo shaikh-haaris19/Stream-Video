@@ -11,7 +11,7 @@ interface FileUploadProps {
     onUploadSuccess: (response: any) => void;
     onProgress?: (progress: number) => void;
     fileType?: 'image' | 'video';
-    reset?: boolean; 
+    reset?: boolean;
 }
 
 const FileUpload = ({
@@ -91,7 +91,7 @@ const FileUpload = ({
             setFileName(null);
             setError(null);
         }
-        
+
     }, [reset]);
 
     return (

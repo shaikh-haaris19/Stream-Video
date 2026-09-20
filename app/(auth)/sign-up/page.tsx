@@ -59,7 +59,6 @@ const SignUp = () => {
 
         try {
 
-            console.log("Submitting data:", data);
             const response = await axios.post("/api/sign-up", data);
 
             if (response.data.success) {
@@ -102,7 +101,6 @@ const SignUp = () => {
 
                 } catch (error) {
                     const err = error as AxiosError<{ message: string }>;
-                    console.log(err.response?.data)
                     toast.error(err.response?.data?.message || "Failed to check email uniqueness");
 
                 } finally {

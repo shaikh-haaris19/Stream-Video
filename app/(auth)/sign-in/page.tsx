@@ -49,8 +49,6 @@ const SignIn = () => {
         redirect: false
       });
 
-      console.log("SignIn response:", response);
-
       if (response?.error) {
 
         toast.error("Sign In Failed! Please check your credentials.");
@@ -90,9 +88,7 @@ const SignIn = () => {
         <CardContent>
 
           {/* Form Validation using React Hook Form */}
-          <form id="form-rhf-input" onSubmit={form.handleSubmit(onSubmit, (errors) => {
-            console.log("FORM VALIDATION ERRORS:", errors);
-          })}>
+          <form id="form-rhf-input" onSubmit={form.handleSubmit(onSubmit)}>
 
             {/* Containing Form Feild : email & Password */}
             <FieldGroup>

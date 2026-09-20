@@ -35,7 +35,7 @@ export async function POST(req: NextRequest) {
 
         console.error(error);
         return NextResponse.json({ message: "Failed to check email uniqueness" }, { status: 500 });
-        
+
     }
 
 }

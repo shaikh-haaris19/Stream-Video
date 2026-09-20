@@ -18,7 +18,7 @@ export async function GET() {
 
         console.error(error)
         return Response.json({ error: "Failed to get upload auth params" }, { status: 500 })
-        
+
     }
 
 }
