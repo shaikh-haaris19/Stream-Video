@@ -18,7 +18,7 @@ export async function GET() {
             return NextResponse.json({ videos: [] }, { status: 404 });
         }
 
-        return NextResponse.json({ videos });
+        return NextResponse.json({ success: true, videos });
 
     } catch (error) {
 
@@ -61,7 +61,7 @@ export async function POST(request: NextRequest) {
         const newVideo = new VideoModel(videoData);
         await newVideo.save();
 
-        return NextResponse.json({ message: "Video uploaded successfully", newVideo }, { status: 200 });
+        return NextResponse.json({ success: true, message: "Video uploaded successfully", newVideo }, { status: 200 });
 
     } catch (error) {
 

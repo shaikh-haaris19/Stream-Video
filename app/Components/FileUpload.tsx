@@ -21,6 +21,7 @@ const FileUpload = ({
 
     const [uploading, setUploading] = useState(false);
     const [error, setError] = useState<string | null>(null);
+    const [fileName, setFileName] = useState<string | null>(null);
 
     // Validate File
     const validateFile = (file: File) => {
@@ -47,6 +48,8 @@ const FileUpload = ({
 
         setUploading(true);
         setError(null);
+
+        setFileName(file.name);
 
         try {
 
@@ -85,15 +88,13 @@ const FileUpload = ({
             <div className="flex items-center gap-3 border border-black rounded-sm">
                 <label
                     htmlFor="file-upload"
-                    className="border-r text-sm md:text-base border-black bg-gray-50 px-2 md:px-4 py-2 rounded-sm cursor-pointer"
+                    className="border-r text-xs md:text-base border-black bg-gray-50 px-1 md:px-4 py-2 rounded-sm cursor-pointer"
                 >
                     Choose {fileType === "video" ? "Video" : "Image"}
                 </label>
 
-                <span className="text-sm text-muted-foreground">
-                    {fileType === "video"
-                        ? "MP4, WebM, MOV"
-                        : "JPG, PNG, WebP"}
+                <span className="text-xs md:text-sm text-muted-foreground overflow-x-hidden">
+                    {fileName || "No file chosen"}
                 </span>
 
                 <Input
